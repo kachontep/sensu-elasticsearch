@@ -4,6 +4,7 @@ require 'patron'
 
 require 'json'
 require 'date'
+require 'oj'
 
 
 module Sensu::Extension
@@ -22,6 +23,8 @@ module Sensu::Extension
       @esclient = Elasticsearch::Client.new host: settings['elastic']['host'], timeout: settings['elastic']['timeout']
       @index = settings['elastic']['index']
       @type = settings['elastic']['type']
+      # Make json keys to symbols
+      Oj.default_options = { :symbol_keys => true }
     end
 
     def run(event)
